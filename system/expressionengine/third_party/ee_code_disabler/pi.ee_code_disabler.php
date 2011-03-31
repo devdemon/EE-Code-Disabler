@@ -11,7 +11,7 @@
  * /system/plugins/ folder in your ExpressionEngine installation.
  *
  * @package DevDemon:EECodeDisabler
- * @version 1.0.0
+ * @version 2.0
  * @author DevDemon
  * @see http://www.devdemon.com/
  * @copyright Copyright (c) 2009-2010 DevDemon
@@ -25,11 +25,11 @@
  */
 $plugin_info = array(
 	'pi_name'		=> 'EE Code Disabler',
-	'pi_version'	=> '1.0.0',
+	'pi_version'	=> '2.0',
 	'pi_author'		=> 'DevDemon',
 	'pi_author_url'	=> 'http://www.devdemon.com',
 	'pi_description'=> 'Disables Expression Engine Code',
-	'pi_usage'		=> EE_Code_Disabler::usage()
+	'pi_usage'		=> Ee_code_disabler::usage()
 	);
 
 
@@ -43,7 +43,7 @@ $plugin_info = array(
  * @see http://www.devdemon.com/
  * @copyright Copyright (c) 2009-2010 DevDemon
  */
-class EE_Code_Disabler
+class Ee_code_disabler
 {
 	/**
 	 * Return Data
@@ -52,24 +52,38 @@ class EE_Code_Disabler
 	 */
 	var $return_data = '';
 
+	/**
+	 * Constructor
+	 *
+	 * @access public
+	 *
+	 * Calls the parent constructor
+	 */
+	public function __construct()
+ 	{
+ 		 $this->EE =& get_instance();
+ 	}
 
-	function disable()
+ 	// ********************************************************************************* //
+
+	public function disable()
 	{
-		global $TMPL;
+		$this->EE->TMPL->tagdata = str_replace(array ('{', '}', '{exp'), array ('&#123;', '&#125;', '&#123;exp'), $this->EE->TMPL->tagdata);
 
-		$TMPL->tagdata = str_replace(array ('{', '}', '{exp'), array ('&#123;', '&#125;', '&#123;exp'), $TMPL->tagdata);
-
-		return $TMPL->tagdata;
+		return $this->EE->TMPL->tagdata;
 	}
 
 	// ********************************************************************************* //
 
 	/**
-	 * Plugin usage documentation
+	 * Usage
 	 *
-	 * @return	string - Plugin usage instructions
+	 * This function describes how the plugin is used.
+	 *
+	 * @access	public
+	 * @return	string
 	 */
-	function usage()
+	public function usage()
 	{
 		return 'For usage visit: http://www.devdemon.com/';
 	}
@@ -79,4 +93,4 @@ class EE_Code_Disabler
 } // END CLASS
 
 /* End of file pi.ee_code_disabler.php */
-/* Location: ./system/plugins/pi.ee_code_disabler.php */
+/* Location: ./system/expressionengine/third_party/ee_code_disabler/pi.ee_code_disabler.php */
